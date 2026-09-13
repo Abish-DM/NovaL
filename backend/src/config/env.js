@@ -1,16 +1,20 @@
+const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
 
-// Load environment variables from root or backend .env
+// Load environment variables: parent .env files first, backend .env last so backend/.env takes highest precedence
 const envPaths = [
-  path.resolve(process.cwd(), '.env'),
+  path.resolve(__dirname, '../../../.env'),
+  path.resolve(__dirname, '../../.env'),
   path.resolve(process.cwd(), '../.env'),
   path.resolve(__dirname, '../../.env'),
-  path.resolve(__dirname, '../../../.env'),
+  path.resolve(process.cwd(), '.env'),
 ];
 
 for (const envPath of envPaths) {
-  dotenv.config({ path: envPath, override: true });
+  if (fs.existsSync(envPath)) {
+    dotenv.config({ path: envPath, override: true });
+  }
 }
 
 const config = {
