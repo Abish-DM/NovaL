@@ -24,6 +24,13 @@ venv/
 ENV/
 .pytest_cache/
 
+# macOS System Files
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
 # Node / React
 node_modules/
 dist/
@@ -40,4 +47,5 @@ private_storage/
 
 # Environment
 .env
+.env.*
 .env.production
