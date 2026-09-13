@@ -1,0 +1,61 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String     @id @default(uuid())
+  google_id  String     @unique @map("google_id")
+  email      String     @unique
+  name       String
+  avatar_url String?    @map("avatar_url")
+  role       String     @default("VIEWER")
+  created_at DateTime   @default(now()) @map("created_at")
+  updated_at DateTime   @updatedAt @map("updated_at")
+
+  contents   Content[]
+  audit_logs AuditLog[]
+
+  @@map("users")
+}
+
+model Content {
+  id                String   @id @default(uuid())
+  title             String
+  description       String?
+  category          String
+  content_type      String   @map("content_type")
+  storage_key       String   @unique @map("storage_key")
+  original_filename String   @map("original_filename")
+  mime_type         String   @map("mime_type")
+  file_size         BigInt   @map("file_size")
+  view_count        Int      @default(0) @map("view_count")
+  created_by        String   @map("created_by")
+  created_at        DateTime @default(now()) @map("created_at")
+  updated_at        DateTime @updatedAt @map("updated_at")
+
+  creator           User     @relation(fields: [created_by], references: [id])
+
+  @@index([title])
+  @@index([category])
+  @@index([content_type])
+  @@map("contents")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  admin_id    String   @map("admin_id")
+  admin_email String   @map("admin_email")
+  action      String
+  content_id  String?  @map("content_id")
+  details     String?
+  timestamp   DateTime @default(now())
+
+  admin       User     @relation(fields: [admin_id], references: [id])
+
+  @@map("audit_logs")
+}
