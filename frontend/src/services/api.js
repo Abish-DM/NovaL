@@ -3,7 +3,7 @@
  * to automatically attach HttpOnly session cookies.
  */
 
-const API_BASE = '/api';
+export const API_BASE = import.meta.env.VITE_API_URL || '';
 
 async function request(endpoint, options = {}) {
   const config = {
@@ -20,7 +20,8 @@ async function request(endpoint, options = {}) {
     config.body = JSON.stringify(options.body);
   }
 
-  const response = await fetch(`${API_BASE}${endpoint}`, config);
+  const fullUrl = endpoint.startsWith('/api') ? `${API_BASE}${endpoint}` : `${API_BASE}/api${endpoint}`;
+  const response = await fetch(fullUrl, config);
 
   if (response.status === 401) {
     // Session unauthenticated or expired

@@ -1,8 +1,9 @@
 import React from 'react';
-import { PlayCircle, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
+import { API_BASE } from '../../services/api';
 
 export const VideoPlayer = ({ contentId, mimeType, title }) => {
-  const streamUrl = `/api/content/${contentId}/stream`;
+  const streamUrl = `${API_BASE}/api/content/${contentId}/stream`;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>

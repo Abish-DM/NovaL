@@ -47,10 +47,13 @@ async function googleCallback(req, res, next) {
     const targetPath = user.role === 'ADMIN' ? '/admin' : '/dashboard';
     const redirectUrl = `${config.FRONTEND_URL}${targetPath}`;
 
+    const isProd = config.COOKIE_SECURE || config.ENVIRONMENT === 'production';
+    const sameSitePolicy = isProd ? 'none' : 'lax';
+
     res.cookie(config.COOKIE_NAME, sessionToken, {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: config.COOKIE_SECURE,
+      sameSite: sameSitePolicy,
+      secure: isProd,
       path: '/',
     });
 
@@ -79,11 +82,14 @@ async function getMe(req, res, next) {
 
 async function logout(req, res, next) {
   try {
+    const isProd = config.COOKIE_SECURE || config.ENVIRONMENT === 'production';
+    const sameSitePolicy = isProd ? 'none' : 'lax';
+
     res.clearCookie(config.COOKIE_NAME, {
       path: '/',
       httpOnly: true,
-      sameSite: 'lax',
-      secure: config.COOKIE_SECURE,
+      sameSite: sameSitePolicy,
+      secure: isProd,
     });
     return res.json({ message: 'Successfully logged out' });
   } catch (err) {

@@ -22,6 +22,7 @@ class StorageService {
           secretAccessKey: config.STORAGE_SECRET_KEY,
         },
         region: config.STORAGE_REGION,
+        forcePathStyle: true,
       };
       if (config.STORAGE_ENDPOINT) {
         s3Config.endpoint = config.STORAGE_ENDPOINT;
