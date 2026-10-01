@@ -290,3 +290,6 @@ npm test
 
 * **Server-Side Boundary**: All administrative operations (`POST`, `PATCH`, `DELETE` on `/api/admin/*`) enforce the `requireAdmin` Express middleware.
 * **Admin Allow-List**: User role is determined on login strictly by comparing the authenticated email against the `ADMIN_EMAIL` allow-list. Frontend role indicators are purely cosmetic.
+## Development Status
+
+The project is currently under active development.
